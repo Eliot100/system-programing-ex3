@@ -18,11 +18,16 @@ int getWordLength(char* const p){
 	int i = 0; 
 	int flag = 1;
 	while(i < WORD && flag){
-		if(*(p+i) == ' '|| *(p+i) == '\t'|| *(p+i) == '\n'|| *(p+i) == '\0'){
+		if( (*(p+i) == ' ') || (*(p+i) == '\0')||(*(p+i) == '\t')){
 			flag = 0;
-		} else i++;
+		}
+		if((*(p+i) == '\n') ){
+			flag = 0; 
+			i--;
+		}
+		i++;
 	}
-	return i;
+	return i-1;
 }
 
 int substring(char* const str1, char* const str2){
@@ -90,6 +95,7 @@ void printLines(char* line, char* theWord, int wordLength){
 }
 
 void printSimilarWords(char* line, int lineLength, char* TheWord, int WordLength){
+	int DBAG = 0;
 	int i = 0;
 	while(*(line+i) != '\0' && *(line+i)!= '\n'){
 		int tempLength = getWordLength(line+i);
@@ -97,6 +103,7 @@ void printSimilarWords(char* line, int lineLength, char* TheWord, int WordLength
 		for(int j =0; j<tempLength; j++){
 			tempWord[j] = *(line+i+j);
 		}
+		if (DBAG) printf("tempWord: %s, %d\n", tempWord, tempLength);
 		i += tempLength+1;
 		if(tempLength < WordLength+2 && tempLength >= WordLength){
 			if (similar(TheWord, WordLength, tempWord, tempLength )) {
